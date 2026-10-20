@@ -11,11 +11,13 @@
   "portsAttributes": {
     "80": {
       "label": "Application & Nginx Canary Router",
-      "onAutoForward": "openBrowser"
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
     },
     "4242": {
       "label": "Console Unleash (Feature Flags)",
-      "onAutoForward": "notify"
+      "onAutoForward": "notify",
+      "visibility": "public"
     },
     "5000": {
       "label": "Backend REST API",

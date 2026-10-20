@@ -143,6 +143,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx:/etc/nginx/configs:ro
+      - ../frontend/dist:/usr/share/nginx/html:ro
     networks:
       - shift-right-net
 

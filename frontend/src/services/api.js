@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = typeof window !== 'undefined' && window.location?.port !== '3000' && window.location?.origin && !process.env.JEST_WORKER_ID
+  ? '/api'
+  : 'http://localhost:5000/api';
 
 /**
  * Client HTTP centralisé avec gestion des jetons JWT et extraction d'erreurs
