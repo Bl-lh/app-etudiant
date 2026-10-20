@@ -48,7 +48,7 @@ services:
   # 3. SERVEUR UNLEASH (Feature Flags & Kill Switch Engine)
   # ==============================================================================
   unleash-server:
-    image: unleashorg/unleash-server:5.11
+    image: unleashorg/unleash-server:latest
     container_name: campus-unleash-server
     restart: unless-stopped
     depends_on:
@@ -58,8 +58,10 @@ services:
       DATABASE_URL: "postgres://unleash_user:unleash_password@unleash-db:5432/unleash"
       DATABASE_SSL: "false"
       LOG_LEVEL: "warn"
+      AUTH_TYPE: "none"
       INIT_CLIENT_API_TOKENS: "*:production.be4436eb09f3a04a0d2447e180efdc35bedfc86e84b9d800fa77d169"
       INIT_FRONTEND_API_TOKENS: "*:production.frontend-token-12345"
+      INIT_ADMIN_API_TOKENS: "*:*.campus-admin-token-secret-2026"
       UNLEASH_SECRET: "campus-unleash-secret-key-2026-sigl"
     ports:
       - "4242:4242"

@@ -85,7 +85,7 @@ echo -e "  • Succès (HTTP 200)  : ${GREEN}${TOTAL_SUCCESS}${NC}"
 echo -e "  • Échecs (HTTP 5xx)  : ${RED}${TOTAL_FAILURES}${NC}"
 echo -e "  • ${BOLD}Taux d'Échec Global: "
 
-if (( $(echo "$FAILURE_RATE > 0" | bc -l) )); then
+if [ "$TOTAL_FAILURES" -gt 0 ]; then
   echo -e "    ${RED}${BOLD}⚠️  ALERTE PANNE DÉTECTÉE : Taux d'erreur de ${FAILURE_RATE}% !${NC}"
   echo -e "    ${YELLOW}Action requise : Déclencher le Kill Switch Unleash ou Rollback Nginx.${NC}"
 else

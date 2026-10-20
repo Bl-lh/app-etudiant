@@ -7,7 +7,7 @@
 ACTION="${1:-status}"
 FEATURE_NAME="${2:-chaos_faulty_payment}"
 UNLEASH_HOST="${3:-http://localhost:4242}"
-API_TOKEN="${4:-*:production.be4436eb09f3a04a0d2447e180efdc35bedfc86e84b9d800fa77d169}"
+API_TOKEN="${4:-*:*.campus-admin-token-secret-2026}"
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
