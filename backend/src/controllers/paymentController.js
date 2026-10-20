@@ -2,6 +2,7 @@ const { pool, withTransaction } = require('../config/db');
 const { validatePaymentCard } = require('../utils/luhnValidator');
 const { calculateDiscount, verifyCouponEligibility } = require('../services/discountService');
 const { generateTransactionId, generateReceiptNumber, formatReceiptData } = require('../utils/receiptGenerator');
+const { isFeatureEnabled } = require('../services/unleashService');
 
 /**
  * Vérifier la validité d'un coupon de réduction
@@ -147,7 +148,18 @@ async function processPayment(req, res, next) {
       }
     }
 
-    // 3. Validation de la méthode de paiement
+    // 3. Contrôle du Feature Flag Unleash (Chaos Engineering & Kill-Switch)
+    const unleashContext = { userId: String(userId), remoteAddress: req.ip };
+    if (isFeatureEnabled('chaos_faulty_payment', unleashContext, false)) {
+      return res.status(500).json({
+        success: false,
+        status: 500,
+        errorCode: 'ERR_UNLEASH_CHAOS_PAYMENT_FAILURE',
+        message: 'Échec critique : La passerelle de règlement bancaire est indisponible (Panne simulée via Feature Flag Unleash).'
+      });
+    }
+
+    // 4. Validation de la méthode de paiement
     let cardLast4 = null;
     if (paymentMethod === 'CREDIT_CARD') {
       if (!cardData) {
