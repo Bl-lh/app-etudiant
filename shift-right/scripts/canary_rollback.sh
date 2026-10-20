@@ -33,8 +33,11 @@ else
   echo -e "Pour OCI : Exécutez 'docker exec campus-canary-router nginx -s reload'."
 fi
 
-echo -e "3. Vérification du statut du routeur :"
-curl -s http://localhost/canary-status || true
+TARGET_PORT="80"
+if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/canary-status 2>/dev/null | grep -q "200"; then
+  TARGET_PORT="8080"
+fi
+curl -s "http://localhost:${TARGET_PORT}/canary-status" || true
 echo ""
 echo -e "${GREEN}${BOLD}====================================================================${NC}"
 echo -e "${GREEN}${BOLD}  RÉCUPÉRATION TERMINÉE : Le trafic est désormais à 100% sécurisé.  ${NC}"

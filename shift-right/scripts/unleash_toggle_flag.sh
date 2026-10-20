@@ -64,9 +64,10 @@ case "$ACTION" in
 
   status|check)
     echo -e "${CYAN}Consultation de l'état actuel auprès de l'API applicative...${NC}"
-    curl -s http://localhost/api/shift-right/status | grep -o '"flags":{[^}]*}' || \
+    curl -s http://localhost:8080/api/shift-right/status | grep -o '"flags":{[^}]*}' || \
+      curl -s http://localhost/api/shift-right/status | grep -o '"flags":{[^}]*}' || \
       curl -s http://localhost:5000/api/shift-right/status | grep -o '"flags":{[^}]*}' || \
-      echo -e "${YELLOW}Application non joignable sur les ports standards (80 ou 5000).${NC}"
+      echo -e "${YELLOW}Application non joignable sur les ports standards (80, 8080 ou 5000).${NC}"
     ;;
 
   *)

@@ -92,6 +92,9 @@ else
   echo -e "${CYAN}Note : Le conteneur Docker campus-canary-router n'est pas actif localement.${NC}"
 fi
 
-echo -e "3. Vérification du statut :"
-curl -s http://localhost/canary-status || true
+TARGET_PORT="80"
+if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/canary-status 2>/dev/null | grep -q "200"; then
+  TARGET_PORT="8080"
+fi
+curl -s "http://localhost:${TARGET_PORT}/canary-status" || true
 echo ""
