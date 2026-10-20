@@ -1,0 +1,23 @@
+node_modules/
+dist/
+build/
+coverage/
+.env.local
+.DS_Store
+*.log
+
+# Reports and documentation (PDFs, LaTeX artifacts, captures)
+docs/
+captures/
+scripts/
+*.pdf
+rapport_*
+playwright-report/
+test-results/
+target/
+reports/
+coverage-jest/
+frontend/coverage-jest/
+frontend/reports/
+.stryker-tmp/
+.scannerwork/

@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: campus-enroll-rollout
+  namespace: default
+  labels:
+    app: campus-enroll
+spec:
+  replicas: 5
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: campus-enroll
+  template:
+    metadata:
+      labels:
+        app: campus-enroll
+    spec:
+      containers:
+        - name: campus-backend
+          image: campus-backend:v1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "5000"
+            - name: APP_VERSION
+              value: "v1.0.0-stable"
+            - name: ENABLE_UNLEASH
+              value: "true"
+            - name: UNLEASH_URL
+              value: "http://unleash-service:4242/api"
+            - name: UNLEASH_API_TOKEN
+              value: "*:production.be4436eb09f3a04a0d2447e180efdc35bedfc86e84b9d800fa77d169"
+          readinessProbe:
+            httpGet:
+              path: /api/shift-right/status
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+  strategy:
+    canary:
+      # Services Kubernetes pour séparer le trafic stable et canary
+      stableService: campus-stable-service
+      canaryService: campus-canary-service
+      
+      # Étapes de montée progressive en charge (Canary Rollout Steps)
+      steps:
+        # Étape 1 : 20% du trafic vers le Canary, puis pause d'observation
+        - setWeight: 20
+        - pause: { duration: 15s }
+        # Étape 2 : 40% du trafic vers le Canary
+        - setWeight: 40
+        - pause: { duration: 15s }
+        # Étape 3 : 60% du trafic vers le Canary
+        - setWeight: 60
+        - pause: { duration: 15s }
+        # Étape 4 : 80% du trafic vers le Canary
+        - setWeight: 80
+        - pause: { duration: 15s }
+        # Étape 5 : Promotion automatique à 100% si aucune panne n'est détectée

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unleash-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unleash
+  template:
+    metadata:
+      labels:
+        app: unleash
+    spec:
+      containers:
+        - name: unleash
+          image: unleashorg/unleash-server:5.11
+          ports:
+            - containerPort: 4242
+          env:
+            - name: DATABASE_HOST
+              value: "localhost"
+            - name: DATABASE_NAME
+              value: "unleash"
+            - name: DATABASE_USER
+              value: "unleash_user"
+            - name: DATABASE_PASSWORD
+              value: "unleash_password"
+            - name: DATABASE_SSL
+              value: "false"
+            - name: INIT_CLIENT_API_TOKENS
+              value: "*:production.be4436eb09f3a04a0d2447e180efdc35bedfc86e84b9d800fa77d169"
+            - name: UNLEASH_SECRET
+              value: "unleash-secret-token-k8s"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unleash-service
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - port: 4242
+      targetPort: 4242
+      nodePort: 30424
+  selector:
+    app: unleash

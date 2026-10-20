@@ -1,0 +1,57 @@
+# ==============================================================================
+# Services Kubernetes pour Argo Rollouts
+# ==============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: campus-stable-service
+  namespace: default
+  labels:
+    app: campus-enroll
+    role: stable
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 5000
+      protocol: TCP
+      name: http
+  selector:
+    app: campus-enroll
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: campus-canary-service
+  namespace: default
+  labels:
+    app: campus-enroll
+    role: canary
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 5000
+      protocol: TCP
+      name: http
+  selector:
+    app: campus-enroll
+
+---
+# Service NodePort / LoadBalancer pour tester depuis le navigateur
+apiVersion: v1
+kind: Service
+metadata:
+  name: campus-public-service
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 5000
+      nodePort: 30080
+      protocol: TCP
+      name: http
+  selector:
+    app: campus-enroll

@@ -1,0 +1,43 @@
+{
+  "name": "app-etudiant",
+  "version": "1.0.0",
+  "description": "[![Node.js Version](https://img.shields.io/badge/node-v20.20-green.svg)](https://nodejs.org) [![MySQL Version](https://img.shields.io/badge/mysql-8.4_LTS-blue.svg)](https://mysql.com) [![React Version](https://img.shields.io/badge/react-19-cyan.svg)](https://react.dev) [![Tests Status](https://img.shields.io/badge/tests-81%2F81_passed-brightgreen.svg)]() [![ISTQB Compliant](https://img.shields.io/badge/standard-ISTQB_ISO_29119-purple.svg)]()",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "type": "module",
+  "scripts": {
+    "test:functional": "playwright test",
+    "test:functional:ui": "playwright test --ui",
+    "test:functional:headed": "playwright test --headed",
+    "test:functional:report": "playwright show-report",
+    "test:mcp:generate": "echo 'Run MCP generation prompt with Playwright server' && exit 0",
+    "test:selenium": "node --test tests-selenium/*.selenium.test.js",
+    "test:selenium:auth": "node --test tests-selenium/auth.selenium.test.js",
+    "test:selenium:catalog": "node --test tests-selenium/catalog.selenium.test.js",
+    "test:frontend": "npm test --prefix frontend",
+    "test:frontend:vitest": "npm run test:vitest --prefix frontend",
+    "test:frontend:vitest:coverage": "npm run test:vitest:coverage --prefix frontend",
+    "test:frontend:jest": "npm run test:jest --prefix frontend",
+    "test:frontend:jest:coverage": "npm run test:jest:coverage --prefix frontend",
+    "test:frontend:coverage": "npm run test:coverage --prefix frontend",
+    "test:backend": "npm test --prefix backend",
+    "test:backend:coverage": "npm run test:coverage --prefix backend",
+    "test:java": "mvn test -f comparatif-java/pom.xml",
+    "test:java:coverage": "mvn test jacoco:report -f comparatif-java/pom.xml",
+    "test:comparatif:all": "mvn test jacoco:report -f comparatif-java/pom.xml && npm run test:coverage --prefix backend && npm run test:coverage --prefix frontend",
+    "test:unit:all": "npm run test:unit --prefix backend && npm test --prefix frontend",
+    "test:mutation:java": "mvn test-compile org.pitest:pitest-maven:mutationCoverage -f comparatif-java/pom.xml",
+    "test:mutation:frontend": "cd frontend && npx @stryker-mutator/core run",
+    "test:mutation:all": "npm run test:mutation:java && npm run test:mutation:frontend",
+    "db:reset-student": "docker exec -i campus-mysql-db mysql -u campus_user -pcampus_password campus_enrollment_db -e \"DELETE FROM payments WHERE user_id = 3 AND id > 2; DELETE FROM enrollments WHERE user_id = 3 AND id > 2;\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "selenium-webdriver": "^4.46.0"
+  }
+}

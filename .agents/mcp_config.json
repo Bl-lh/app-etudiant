@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ],
+      "env": {
+        "HEADLESS": "false"
+      }
+    },
+    "selenium": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@dhivakaranthonydoss/mcp-selenium"
+      ],
+      "env": {
+        "HEADLESS": "false",
+        "DISPLAY": ":0"
+      }
+    }
+  }
+}
