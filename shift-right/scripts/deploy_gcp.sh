@@ -59,8 +59,9 @@ if [ "$EXTERNAL_IP" != "127.0.0.1" ]; then
     echo -e "Diagnostic Canary            : ${BOLD}${CYAN}http://${EXTERNAL_IP}/canary-status${NC}"
 else
     echo -e "${YELLOW}Mode Google Cloud Shell détecté !${NC}"
-    echo -e "Utilisez le bouton 'Aperçu Web' (Web Preview) en haut à droite du Cloud Shell :"
-    echo -e "  • Cliquez sur 'Aperçu Web' > 'Modifier le port' > tapez 80"
+    echo -e "En haut à droite de Cloud Shell, cliquez sur l'icône 'Aperçu Web' (Web Preview) :"
+    echo -e "  • ${BOLD}${CYAN}Cliquez sur 'Prévisualiser sur le port 8080'${NC} -> L'application CampusEnroll s'ouvre !"
+    echo -e "  • Pour Unleash : Cliquez sur 'Modifier le port' > tapez 4242 -> La console Unleash s'ouvre !"
 fi
 echo -e "--------------------------------------------------------------------"
 echo -e "Commandes de démonstration :"

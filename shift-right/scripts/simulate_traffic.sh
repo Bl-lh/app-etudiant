@@ -4,7 +4,14 @@
 # Teste la répartition Canary et l'impact des Feature Flags Unleash
 # ==============================================================================
 
-TARGET_URL="${1:-http://localhost/api/shift-right/transaction}"
+TARGET_URL="${1}"
+if [ -z "$TARGET_URL" ]; then
+  if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/canary-status 2>/dev/null | grep -q "200"; then
+    TARGET_URL="http://localhost:8080/api/shift-right/transaction"
+  else
+    TARGET_URL="http://localhost/api/shift-right/transaction"
+  fi
+fi
 COUNT="${2:-30}"
 
 GREEN='\033[0;32m'
