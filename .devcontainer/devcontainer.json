@@ -1,0 +1,38 @@
+{
+  "name": "CampusEnroll - Shift-Right Testing & Progressive Delivery",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": "true"
+    }
+  },
+  "forwardPorts": [80, 4242, 5000, 5173],
+  "portsAttributes": {
+    "80": {
+      "label": "Application & Nginx Canary Router",
+      "onAutoForward": "openBrowser"
+    },
+    "4242": {
+      "label": "Console Unleash (Feature Flags)",
+      "onAutoForward": "notify"
+    },
+    "5000": {
+      "label": "Backend REST API",
+      "onAutoForward": "silent"
+    },
+    "5173": {
+      "label": "Frontend React / Vite",
+      "onAutoForward": "silent"
+    }
+  },
+  "postCreateCommand": "docker compose -f shift-right/docker-compose.yml up -d",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

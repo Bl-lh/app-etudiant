@@ -3,12 +3,14 @@
 [![Node.js Version](https://img.shields.io/badge/node-v20.20-green.svg)](https://nodejs.org)
 [![MySQL Version](https://img.shields.io/badge/mysql-8.4_LTS-blue.svg)](https://mysql.com)
 [![React Version](https://img.shields.io/badge/react-19-cyan.svg)](https://react.dev)
-[![Tests Status](https://img.shields.io/badge/tests-81%2F81_passed-brightgreen.svg)]()
-[![ISTQB Compliant](https://img.shields.io/badge/standard-ISTQB_ISO_29119-purple.svg)]()
+[![Tests Status](https://img.shields.io/badge/tests-85%2F85_passed-brightgreen.svg)]()
+[![Shift-Right Status](https://img.shields.io/badge/shift--right-canary_%26_unleash_active-orange.svg)]()
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Bl-lh/app-etudiant)
 
-> **Projet Réalisé pour le Module : Processus des Tests Logiciels**  
+> **Projet Réalisé pour le Module : Processus des Tests Logiciels & DevOps**  
 > **Auteur :** Bilal Mansouri  
-> **Établissement :** École Mohammadia d'Ingénieurs (EMI)
+> **Établissement :** École Mohammadia d'Ingénieurs (EMI)  
+> 📖 **[Accéder au Guide Démonstration & Soutenance Professeur (Shift-Right)](GUIDE_DEMO_ET_ARCHITECTURE_SHIFT_RIGHT.md)**
 
 ---
 
