@@ -14,6 +14,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import api from '../services/api';
+import ShiftRightConsole from '../components/ShiftRightConsole';
 
 export default function QACenterPage() {
   const [testData, setTestData] = useState(null);
@@ -155,6 +156,9 @@ export default function QACenterPage() {
           <div className="badge badge-success">STATUT: {diagnosticResult.dbStatus || 'HEALTHY'}</div>
         </div>
       )}
+
+      {/* Console Interactive Shift-Right & Canary Deployment */}
+      <ShiftRightConsole />
 
       {/* Cartes Métriques des Tests */}
       <div className="grid-cols-4" style={{ marginBottom: 20 }}>

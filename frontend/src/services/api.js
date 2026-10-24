@@ -95,8 +95,20 @@ export const api = {
   logQAAudit: (auditData) => request('/qa/audit', { method: 'POST', body: JSON.stringify(auditData) }),
   runLiveTests: () => request('/qa/run', { method: 'POST' }),
 
-  // --- HEALTHCHECK ---
-  getHealth: () => fetch('http://localhost:5000/health').then(r => r.json())
+  // --- HEALTHCHECK & SHIFT-RIGHT ---
+  getHealth: () => fetch(`${API_BASE_URL.replace(/\/api$/, '')}/health`).then(r => r.json()),
+  getShiftRightStatus: () => request('/shift-right/status'),
+  simulateShiftRightTransaction: (data = {}) => request('/shift-right/transaction', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  }),
+  toggleUnleashFlag: (flag, action) => request(`/shift-right/unleash/toggle?flag=${encodeURIComponent(flag)}&action=${encodeURIComponent(action)}`),
+  rollbackCanary: () => request('/shift-right/canary/rollback', { method: 'POST' }),
+  promoteCanary: (ratio = 10) => request('/shift-right/canary/promote', {
+    method: 'POST',
+    body: JSON.stringify({ ratio })
+  }),
+  getCanaryStatus: () => request('/shift-right/canary/status')
 };
 
 export default api;
