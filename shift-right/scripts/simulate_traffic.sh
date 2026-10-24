@@ -47,8 +47,8 @@ for i in $(seq 1 "$COUNT"); do
   BODY=$(echo "$RESPONSE" | sed '$d' | sed '$d')
 
   # Extraction de la version et du conteneur ayant répondu
-  RELEASE_TYPE=$(echo "$BODY" | grep -o '"releaseType":"[^"]*"' | cut -d'"' -f4)
-  VERSION=$(echo "$BODY" | grep -o '"version":"[^"]*"' | cut -d'"' -f4)
+  RELEASE_TYPE=$(echo "$BODY" | grep -o '"releaseType":"[^"]*"' | head -n 1 | cut -d'"' -f4 | tr -d '\r\n ')
+  VERSION=$(echo "$BODY" | grep -o '"version":"[^"]*"' | head -n 1 | cut -d'"' -f4 | tr -d '\r\n ')
   [ -z "$RELEASE_TYPE" ] && RELEASE_TYPE="UNKNOWN"
   [ -z "$VERSION" ] && VERSION="unknown"
 
