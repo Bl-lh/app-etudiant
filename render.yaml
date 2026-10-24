@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: campus-enroll-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        value: campus_jwt_secret_render_production_2026
+      - key: APP_VERSION
+        value: v1.0.0-stable
+      - key: RELEASE_TYPE
+        value: STABLE
+      - key: ENABLE_UNLEASH
+        value: "false"
+      - key: DB_SSL
+        value: "true"
+      # À renseigner dans le Dashboard Render avec l'URL de votre base TiDB / Aiven / Railway :
+      # - key: DATABASE_URL
+      #   value: mysql://user:password@host:port/database

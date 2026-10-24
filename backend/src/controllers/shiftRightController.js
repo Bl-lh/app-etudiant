@@ -1,5 +1,5 @@
 const os = require('os');
-const { isFeatureEnabled, getAllFlagsState } = require('../services/unleashService');
+const { isFeatureEnabled, getAllFlagsState, setFlagOverride } = require('../services/unleashService');
 
 /**
  * Endpoint de diagnostic et métriques pour le Shift-Right Testing
@@ -86,7 +86,51 @@ async function simulateTransaction(req, res) {
   });
 }
 
+/**
+ * Basculer un Feature Flag à la volée (utile pour démo Cloud / Render sans terminal)
+ */
+async function toggleFeatureFlag(req, res) {
+  const flag = req.body.flag || req.query.flag || 'chaos_faulty_payment';
+  const action = req.body.action || req.query.action || (req.body.enabled !== undefined ? String(req.body.enabled) : 'status');
+
+  if (action === 'on' || action === 'true' || action === 'enable') {
+    setFlagOverride(flag, true);
+    return res.status(200).json({
+      success: true,
+      message: `Feature Flag '${flag}' activé (Panne simulée).`,
+      flag,
+      state: true,
+      killSwitchTriggered: false
+    });
+  } else if (action === 'off' || action === 'false' || action === 'disable' || action === 'kill') {
+    setFlagOverride(flag, false);
+    return res.status(200).json({
+      success: true,
+      message: `Kill Switch déclenché : Feature Flag '${flag}' désactivé. Trafic rétabli !`,
+      flag,
+      state: false,
+      killSwitchTriggered: true
+    });
+  } else if (action === 'reset') {
+    setFlagOverride(flag, null);
+    return res.status(200).json({
+      success: true,
+      message: `Override réinitialisé pour '${flag}'.`,
+      flag
+    });
+  }
+
+  const currentState = isFeatureEnabled(flag, {}, false);
+  return res.status(200).json({
+    success: true,
+    flag,
+    state: currentState,
+    hint: 'Passez ?action=on pour activer la panne ou ?action=off pour déclencher le Kill Switch.'
+  });
+}
+
 module.exports = {
   getShiftRightStatus,
-  simulateTransaction
+  simulateTransaction,
+  toggleFeatureFlag
 };

@@ -1,5 +1,6 @@
 const app = require('./app');
 const { testConnection } = require('./config/db');
+const { initDatabase } = require('./config/initDatabase');
 const { initUnleash } = require('./services/unleashService');
 
 const PORT = process.env.PORT || 5000;
@@ -11,6 +12,7 @@ async function bootstrap() {
     console.error('AVERTISSEMENT : Connexion MySQL non établie. Vérifiez vos identifiants ou le conteneur Docker.');
   } else {
     console.log('✓ Base de données MySQL connectée avec succès (Persistance active)');
+    await initDatabase();
   }
 
   // Initialisation du client Unleash (Feature Flags & Kill Switch)

@@ -8,17 +8,36 @@ if (process.env.NODE_ENV === 'test') {
   dotenv.config();
 }
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || '127.0.0.1',
-  port: parseInt(process.env.DB_PORT || '3306', 10),
-  user: process.env.DB_USER || 'campus_user',
-  password: process.env.DB_PASSWORD || 'campus_password',
-  database: process.env.DB_NAME || 'campus_enrollment_db',
-  waitForConnections: true,
-  connectionLimit: 15,
-  queueLimit: 0,
-  decimalNumbers: true
-});
+let poolConfig;
+
+if (process.env.DATABASE_URL) {
+  const isSsl = process.env.DB_SSL !== 'false';
+  poolConfig = {
+    uri: process.env.DATABASE_URL,
+    waitForConnections: true,
+    connectionLimit: 15,
+    queueLimit: 0,
+    decimalNumbers: true,
+    multipleStatements: true,
+    ssl: isSsl ? { rejectUnauthorized: false } : undefined
+  };
+} else {
+  poolConfig = {
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER || 'campus_user',
+    password: process.env.DB_PASSWORD || 'campus_password',
+    database: process.env.DB_NAME || 'campus_enrollment_db',
+    waitForConnections: true,
+    connectionLimit: 15,
+    queueLimit: 0,
+    decimalNumbers: true,
+    multipleStatements: true,
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
+  };
+}
+
+const pool = mysql.createPool(poolConfig);
 
 /**
  * Teste la connexion à la base de données MySQL

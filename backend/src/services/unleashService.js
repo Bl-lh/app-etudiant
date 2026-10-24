@@ -55,6 +55,17 @@ function initUnleash() {
   }
 }
 
+const inMemoryOverrides = new Map();
+
+function setFlagOverride(toggleName, enabled) {
+  if (enabled === null || enabled === undefined || enabled === 'reset') {
+    inMemoryOverrides.delete(toggleName);
+  } else {
+    inMemoryOverrides.set(toggleName, enabled === true || enabled === 'true' || enabled === 'on' || enabled === 1);
+  }
+  return inMemoryOverrides.get(toggleName);
+}
+
 /**
  * Vérifie si un Feature Flag est actif
  * @param {string} toggleName Nom du flag dans Unleash
@@ -63,7 +74,12 @@ function initUnleash() {
  * @returns {boolean}
  */
 function isFeatureEnabled(toggleName, context = {}, defaultValue = false) {
-  // Possibilité d'overrider via variable d'environnement pour tests locaux
+  // 1. Contrôle par override en mémoire (pour bascule dynamique Cloud / Render)
+  if (inMemoryOverrides.has(toggleName)) {
+    return inMemoryOverrides.get(toggleName);
+  }
+
+  // 2. Possibilité d'overrider via variable d'environnement pour tests locaux
   const envOverride = process.env[`OVERRIDE_FLAG_${toggleName.toUpperCase()}`];
   if (envOverride !== undefined) {
     return envOverride === 'true' || envOverride === '1';
@@ -94,6 +110,7 @@ function getAllFlagsState(context = {}) {
 
   const result = {
     unleashConnected: isReady,
+    inMemoryMode: !isReady || inMemoryOverrides.size > 0,
     flags: {}
   };
 
@@ -107,5 +124,6 @@ function getAllFlagsState(context = {}) {
 module.exports = {
   initUnleash,
   isFeatureEnabled,
+  setFlagOverride,
   getAllFlagsState
 };
